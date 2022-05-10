@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+ 
+<!-- 
+<beans:bean	id="dataSource" 
+            class="org.apache.commons.dbcp.BasicDataSource"
+			p:driverClassName="oracle.jdbc.OracleDriver"
+			p:url="jdbc:oracle:thin:@127.0.0.1:1521:xe"
+			p:username="scott" p:password="tiger"  
+			p:maxActive="10"/> -->
+
+<!-- 외부설정문서(ie. dbInfo.properties파일) 가져오기 -->
+<!--<context:property-placeholder location="/WEB-INF/spring/appServlet/*.properties"/>-->
+<context:property-placeholder location="/WEB-INF/spring/appServlet/dbInfo.properties"/>
+
+<!-- oracle 연결 p:driverClassName=${driver} .. p:username=${username} .. -->
+<beans:bean	id="dataSource" 
+   class="org.apache.commons.dbcp.BasicDataSource"
+				p:driverClassName="${driver}"
+				p:url="${url}"
+				p:username="${user}"
+				 p:password="${password}"
+				 p:maxActive="10"/>
+
+			
+   <beans:bean id="sqlSessionFactory" 
+   class="org.mybatis.spring.SqlSessionFactoryBean">
+		<beans:property name="dataSource" ref="dataSource" />
+		<beans:property name="mapperLocations" value="classpath:mapper/*Mapper.xml" /><!--  Mapper.xml 로끝나는 mapper 모두 등록 -->
+		<beans:property name="typeAliasesPackage" value="mvc.dto" /><!-- dto폴더안에있는 클래스들 별칭 자동만듦 - 클래스명의 첫글만 소문자!! -->
+		<!-- <beans:property name="configLocation" value="classpath:SqlMapConfig.xml"></beans:property> -->
+	</beans:bean>
+	
+	 
+  <beans:bean id="sqlSession"
+     class="org.mybatis.spring.SqlSessionTemplate">
+		<beans:constructor-arg index="0" ref="sqlSessionFactory"/>
+	</beans:bean>
+	
+	
+</beans:beans>
+
+

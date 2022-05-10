@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="suggestMapper">
+
+    <!--
+    <resultMap type="salGradeDTO" id="collectionMap2">
+        <id column="grade" property="grade"/>
+        <result column="losal" property="loSal"/>
+        <result column="hisal" property="hiSal"/>
+
+        <collection property="empDTOList" ofType="empDTO">
+            <id column="empno" property="empNo"/>
+            <result column="ename" property="eName"/>
+            <result column="job" property="job"/>
+            <result column="sal" property="sal"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectSalGradeAndEmp" resultMap="collectionMap2">
+        select s.grade, s.losal, s.hisal, e.empno, e.ename, e.job, e.sal
+        from salgrade s join emp e
+        on e.sal between s.losal and s.hisal
+    </select>
+    -->
+
+    <select id="selectByWord" parameterType="string" resultType="string">
+        select word from suggest
+        where lower(word) like lower(#{_parameter}) || '%'
+    </select>
+
+
+</mapper>

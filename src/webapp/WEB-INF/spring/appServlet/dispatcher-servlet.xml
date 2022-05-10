@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:context="http://www.springframework.org/schema/context"
+             xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- ////////////// contents : Dispatcher Servlet for MVC , Component Scan for MVC , View Resolver for MVC , Global Exceptions /////////// -->
+
+    <!-- what is DispatcherServlet xml all about? : defines the servlet's request-processing infrastructure -->
+
+    <!--
+        what annotation-driven tag does :
+        (1) Enables the Spring MVC @Controller programming model
+        (2) also enables SimpleMappingExceptionResolver & @ExceptionHandler
+     -->
+    <annotation-driven />
+
+    <!--
+        Component Scan allows annotations for construction and insertion /
+        But first, register all the packages for components (component, service, repository, etc)
+    -->
+    <context:component-scan base-package="mvc" />
+
+
+<!--    &lt;!&ndash; Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory &ndash;&gt;-->
+<!--    <resources mapping="/resources/**" location="/resources/" />-->
+
+    <!-- Resolves the views that starts off with /WEB-INF/views directory, selected for rendering by @Controllers, into .jsp views -->
+    <beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <beans:property name="prefix" value="/WEB-INF/views/" />
+        <beans:property name="suffix" value=".jsp" />
+    </beans:bean>
+
+    <!-- register global exceptions -->
+    <beans:bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <beans:property name="exceptionMappings">
+            <beans:props>
+                <!-- just use this to handle all errors : forwards to the error page-->
+                <beans:prop key="java.lang.Exception">
+                    error
+                </beans:prop>
+            </beans:props>
+        </beans:property>
+    </beans:bean>
+
+
+</beans:beans>
